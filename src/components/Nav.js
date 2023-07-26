@@ -1,10 +1,11 @@
-function Nav() {
+import PropTypes from "prop-types";
+function Nav(props) {
   return (
     <>
-      <nav className="navbar navbar-expand-lg bg-body-tertiary">
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container-fluid">
           <a className="navbar-brand" href="/">
-            TextUtils
+            {props.title}
           </a>
           <button
             className="navbar-toggler"
@@ -26,7 +27,7 @@ function Nav() {
               </li>
               <li className="nav-item">
                 <a className="nav-link" href="/">
-                  About
+                  {props.aboutText}
                 </a>
               </li>
             </ul>
@@ -48,4 +49,13 @@ function Nav() {
   );
 }
 
+Nav.propTypes = {
+  title: PropTypes.string.isRequired,
+  aboutText: PropTypes.string.isRequired,
+};
 export default Nav;
+
+Nav.defaultProps = {
+  title: "Set title here",
+  aboutText: "About text here",
+};
