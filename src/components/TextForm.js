@@ -7,6 +7,7 @@ export default function TextForm(props) {
     // console.log("Uppercase was clicked");
     let newText = text.toUpperCase();
     setText(newText);
+    props.alert("Converted to uppercase", "success");
   };
 
   const handleOnChange = (event) => {
@@ -16,6 +17,7 @@ export default function TextForm(props) {
   const handeLowClick = () => {
     let newText = text.toLowerCase();
     setText(newText);
+    props.alert("Converted to lowercase", "success");
   };
 
   const titleCase = () => {
@@ -24,24 +26,33 @@ export default function TextForm(props) {
       newText[i] = newText[i].charAt(0).toUpperCase() + newText[i].slice(1);
     }
     setText(newText.join(" "));
+    props.alert("Converted to title case", "success");
   };
 
   const handleCopy = () => {
     let text = document.getElementById("myBox");
     text.select();
     navigator.clipboard.writeText(text.value);
+    props.alert("Copied to clipboard", "success");
   };
 
   const removeExtraSpaces = () => {
     let newText = text.split(/[ ]+/);
     setText(newText.join(" "));
+    props.alert("Extra spaces removed", "success");
   };
   const [text, setText] = useState("");
   //text is a state variable and setText is a function that is used to update the value of text.
   // text = ""; >> this is the wrong way of updating the text state. we use setText() function to update the text state.
   return (
     <>
-      <div className="container">
+      <div
+        className="container"
+        style={{
+          // here is two brackets one is for the style attribute and the other is for the object.
+          color: props.mode === "dark" ? "white" : "black",
+        }}
+      >
         <h1 className="my-3">{props.heading}</h1>
         <div className="mb-3">
           <textarea
@@ -51,6 +62,10 @@ export default function TextForm(props) {
             //when this event is used we got a free event object which is passed to the function which is called when the event is triggered.
             id="myBox"
             rows="8"
+            style={{
+              backgroundColor: props.mode === "dark" ? "#2A2B2D" : "white",
+              color: props.mode === "dark" ? "white" : "black",
+            }}
           ></textarea>
         </div>
         <button className="btn btn-primary mx-1" onClick={handeUpClick}>
@@ -69,14 +84,31 @@ export default function TextForm(props) {
           Remove Extra Spaces
         </button>
       </div>
-      <div className="container my-3">
+      <div
+        className="container my-3"
+        style={{
+          color: props.mode === "dark" ? "white" : "black",
+        }}
+      >
         <h2>Your text summery</h2>
         <p>
-          {text.split(" ").length} words, and {text.length} characters
+          {text.length === 0
+            ? "0"
+            : text.charAt(text.length - 1) === " "
+            ? text.split(" ").length - 1
+            : text.split(" ").length}{" "}
+          words, and {text.length} characters
         </p>
-        <p>{0.008 * text.split(" ").length} Minuits Read</p>
+        <p>
+          {text.length === 0
+            ? "0"
+            : text.charAt(text.length - 1) === " "
+            ? 0.008 * text.split(" ").length - 0.008
+            : 0.008 * text.split(" ").length}{" "}
+          Minuits Read
+        </p>
         <h2>Preview</h2>
-        <p>{text.length > 0 ? text : "Enter text to preview"}</p>
+        <p>{text.length >= 1 ? text : "Enter text to preview"}</p>
       </div>
     </>
   );
